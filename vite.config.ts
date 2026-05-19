@@ -13,4 +13,10 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      // Tell Vite to safely ignore Node-specific server imports during browser bundling
+      external: ["node:async_hooks"],
+    },
+  },
 });
