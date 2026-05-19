@@ -130,7 +130,7 @@ function StorePage() {
 
             <Button
               variant="outline"
-              className="w-full border-border/60 text-white hover:bg-white/10"
+              className="w-full border-border/60 text-white font-bold bg-white/10 hover:bg-white/20 transition-colors"
               onClick={() => {
                 setBpm([60, 200]);
                 setMaxPrice(50000000);
@@ -155,7 +155,6 @@ function StorePage() {
               </div>
             </>
           ) : (
-            /* FIXED: Clean HTML output without the accidental curly bracket wrapper */
             <div className="rounded-2xl border border-dashed border-border/40 bg-black/40 p-12 text-center backdrop-blur-md">
               <p className="font-display text-lg font-semibold text-white">No beats match your filters.</p>
               <p className="mt-2 text-sm text-white/70">Try widening your BPM range or clearing filters.</p>
