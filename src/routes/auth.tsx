@@ -32,24 +32,24 @@ function AuthPage() {
 
   return (
     <div className="container mx-auto flex min-h-[80vh] max-w-md items-center px-4 py-10">
-      <div className="w-full rounded-2xl border border-border bg-card/60 p-8 shadow-vault backdrop-blur">
-        <h1 className="font-display text-3xl font-bold">Welcome to dollar.com.beat</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Sign in to buy beats and access your library.</p>
+      <div className="w-full rounded-2xl border border-border bg-card/80 p-8 shadow-vault backdrop-blur">
+        <h1 className="font-display text-3xl font-bold text-foreground">Welcome to dollar.com.beat</h1>
+        <p className="mt-1 text-sm text-foreground/80">Sign in to buy beats and access your library.</p>
 
         <Tabs defaultValue="login" className="mt-6">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="login">Sign in</TabsTrigger>
-            <TabsTrigger value="signup">Create account</TabsTrigger>
+            <TabsTrigger value="login" className="text-foreground/90 font-medium">Sign in</TabsTrigger>
+            <TabsTrigger value="signup" className="text-foreground/90 font-medium">Create account</TabsTrigger>
           </TabsList>
           <TabsContent value="login"><LoginForm /></TabsContent>
           <TabsContent value="signup"><SignupForm /></TabsContent>
         </Tabs>
 
-        <div className="my-6 flex items-center gap-3 text-xs text-muted-foreground">
+        <div className="my-6 flex items-center gap-3 text-xs text-foreground/70 font-medium">
           <span className="h-px flex-1 bg-border" /> OR <span className="h-px flex-1 bg-border" />
         </div>
 
-        <Button variant="outline" className="w-full" onClick={async () => {
+        <Button variant="outline" className="w-full text-foreground hover:bg-accent" onClick={async () => {
           const r = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
           if (r.error) toast.error(r.error.message ?? "Google sign-in failed");
         }}>
@@ -75,9 +75,9 @@ function LoginForm() {
         if (error) toast.error(error.message);
       }}
     >
-      <Field label="Email"><Input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} /></Field>
-      <Field label="Password"><Input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} /></Field>
-      <Button type="submit" disabled={loading} className="w-full bg-gradient-vault text-primary-foreground">
+      <Field label="Email"><Input type="email" required value={email} className="text-foreground" onChange={(e) => setEmail(e.target.value)} /></Field>
+      <Field label="Password"><Input type="password" required value={password} className="text-foreground" onChange={(e) => setPassword(e.target.value)} /></Field>
+      <Button type="submit" disabled={loading} className="w-full bg-gradient-vault text-primary-foreground font-semibold">
         {loading ? "Signing in…" : "Sign in"}
       </Button>
     </form>
@@ -108,10 +108,10 @@ function SignupForm() {
         else toast.success("Account created. Check your email to confirm.");
       }}
     >
-      <Field label="Display name"><Input required value={name} onChange={(e) => setName(e.target.value)} /></Field>
-      <Field label="Email"><Input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} /></Field>
-      <Field label="Password"><Input type="password" required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} /></Field>
-      <Button type="submit" disabled={loading} className="w-full bg-gradient-vault text-primary-foreground">
+      <Field label="Display name"><Input required value={name} className="text-foreground" onChange={(e) => setName(e.target.value)} /></Field>
+      <Field label="Email"><Input type="email" required value={email} className="text-foreground" onChange={(e) => setEmail(e.target.value)} /></Field>
+      <Field label="Password"><Input type="password" required minLength={8} value={password} className="text-foreground" onChange={(e) => setPassword(e.target.value)} /></Field>
+      <Button type="submit" disabled={loading} className="w-full bg-gradient-vault text-primary-foreground font-semibold">
         {loading ? "Creating…" : "Create account"}
       </Button>
     </form>
@@ -121,7 +121,7 @@ function SignupForm() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="space-y-1.5">
-      <Label className="text-xs uppercase tracking-wider text-muted-foreground">{label}</Label>
+      <Label className="text-xs uppercase tracking-wider text-foreground/90 font-semibold">{label}</Label>
       {children}
     </div>
   );
