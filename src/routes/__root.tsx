@@ -1,23 +1,24 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
-  createRootRouteWithContext,
+  createRootRoute,
   useRouter,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
+import { QueryClientProvider } from "@tanstack/react-query";
 
-import appCss from "../styles.css?url";
+import "../styles.css"; // Directly import your global styles natively
 import { AuthProvider } from "@/lib/auth";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { GlobalPlayer } from "@/components/global-player";
 import { CookieBanner } from "@/components/cookie-banner";
 import { Toaster } from "@/components/ui/sonner";
+import { queryClient } from "../router";
 
-// --- IMPORT YOUR LOCAL IMAGES (hero.jpg removed) ---
+// --- IMPORT YOUR LOCAL IMAGES ---
 import heroBg from "@/assets/hero.jpg";
 import pic1 from "@/assets/pic1.jpg";
 import pic2 from "@/assets/pic2.jpg";
@@ -87,7 +88,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -103,17 +104,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Original beats by K. Kingsley. One price, full ownership." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      {
-        name: "theme-color",
-        content: "#000000",
-      },
+      { name: "theme-color", content: "#000000" },
     ],
     links: [
-      { rel: "stylesheet", href: appCss },
-      {
-        rel: "preconnect",
-        href: "https://fonts.googleapis.com",
-      },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
@@ -121,41 +115,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
     ],
   }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
 
-function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
-
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
-
-  // --- 3D SCROLL & ROTATION STATE ---
   const [scrollY, setScrollY] = useState(0);
   const [currentBgIndex, setCurrentBgIndex] = useState(0);
 
-  // Handle Scroll Math
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Handle 20-second Image Rotation
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentBgIndex((prevIndex) => (prevIndex + 1) % backgrounds.length);
@@ -172,8 +146,6 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <div className="relative min-h-screen overflow-x-hidden bg-black text-white">
-
-          {/* 3D BACKGROUND CONTAINER */}
           <div className="fixed inset-0 z-0 overflow-hidden" style={{ perspective: "1000px" }}>
             {backgrounds.map((bg, index) => (
               <div
@@ -192,11 +164,9 @@ function RootComponent() {
                 }}
               />
             ))}
-            {/* TUNED VISIBILITY OVERLAY: Dropped opacity to 45% so the rotating 3D images look incredibly bright and clear */}
             <div className="absolute inset-0 bg-black/45 backdrop-blur-[4px]" />
           </div>
 
-          {/* MAIN APP CONTENT */}
           <div className="relative z-10 flex min-h-screen flex-col">
             <SiteHeader />
             <main className="flex-1 pb-24">
@@ -207,7 +177,6 @@ function RootComponent() {
             <CookieBanner />
             <Toaster richColors theme="dark" />
           </div>
-
         </div>
       </AuthProvider>
     </QueryClientProvider>

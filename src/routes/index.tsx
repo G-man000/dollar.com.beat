@@ -69,9 +69,7 @@ function HomePage() {
 
 function Hero() {
   return (
-    // FIXED: Removed 'bg-hero' class and changed to 'bg-transparent'
     <section className="relative overflow-hidden bg-transparent">
-      {/* FIXED: Completely deleted the static <img src={hero} /> tag block here */}
       <div className="absolute inset-0 grid-noise opacity-20 pointer-events-none" aria-hidden />
 
       <div className="relative container mx-auto px-4 py-20 md:py-32">
@@ -108,7 +106,6 @@ function Hero() {
 
 function GenreStrip() {
   return (
-    // Updated background container to translucent dark glass matching headers/footers
     <div className="border-y border-border/40 bg-black/40 backdrop-blur-md">
       <div className="container mx-auto flex gap-2 overflow-x-auto px-4 py-4 scrollbar-none">
         {GENRES.map((g) => (
@@ -133,7 +130,6 @@ function ValueProps() {
     { icon: Sparkles, title: "Made in-house", body: "Every beat produced and mixed by K. Kingsley. No middlemen." },
   ];
   return (
-    // Updated value properties section to share the dark mesh layout
     <section className="border-t border-border/40 bg-black/20 backdrop-blur-sm">
       <div className="container mx-auto grid gap-6 px-4 py-16 md:grid-cols-3">
         {items.map(({ icon: Icon, title, body }) => (

@@ -1,22 +1,29 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { fileURLToPath } from "url";
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import tailwindcss from "@tailwindcss/vite";
 import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
-    plugins: [react()],
+    plugins: [
+        TanStackRouterVite({
+            routesDirectory: "./src/routes",
+            generatedRouteTree: "./src/routeTree.gen.ts",
+        }),
+        react(),
+        tailwindcss(),
+    ],
+    server: {
+        port: 8080,
+        strictPort: true,
+    },
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "./src"),
-        },
-    },
-    build: {
-        rollupOptions: {
-            // Tell Vite to safely ignore Node-specific server imports during browser bundling
-            external: ["node:async_hooks"],
         },
     },
 });
