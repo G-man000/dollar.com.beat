@@ -17,6 +17,8 @@ export function CookieBanner() {
   const record = async (analytics: boolean, marketing: boolean) => {
     localStorage.setItem(KEY, JSON.stringify({ analytics, marketing, at: Date.now() }));
     setShow(false);
+
+    // Smoothly pushes the choice to your database tables
     const { data } = await supabase.auth.getUser();
     await supabase.from("cookie_consents").insert({
       user_id: data.user?.id ?? null,
@@ -29,37 +31,54 @@ export function CookieBanner() {
   if (!show) return null;
 
   return (
-    <div className="fixed inset-x-3 bottom-3 z-[60] mx-auto max-w-3xl rounded-2xl border border-border bg-card/95 p-5 shadow-vault backdrop-blur-xl md:bottom-6">
+    <div className="fixed inset-x-3 bottom-3 z-[60] mx-auto max-w-3xl rounded-2xl border border-border bg-card/98 p-5 shadow-vault backdrop-blur-xl md:bottom-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center">
+
+        {/* Left: Icon & High-Contrast Descriptions */}
         <div className="flex items-start gap-3">
-          <Cookie className="mt-0.5 h-5 w-5 shrink-0 text-vault" />
+          <Cookie className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
           <div className="text-sm">
-            <p className="font-medium text-foreground">We use cookies</p>
-            <p className="mt-1 text-muted-foreground">
+            <p className="font-bold text-foreground">We use cookies</p>
+            <p className="mt-1 font-medium leading-relaxed text-muted-foreground">
               Necessary cookies keep dollar.com.beat working. Optional analytics & marketing cookies help us
               improve. See our{" "}
-              <Link to="/cookie-notice" className="text-vault hover:underline">
+              <Link to="/cookie-notice" className="text-primary hover:text-vault-glow font-bold underline underline-offset-2 transition-colors">
                 Cookie Notice
               </Link>
               .
             </p>
           </div>
         </div>
-        <div className="flex flex-wrap justify-end gap-2 md:ml-auto">
-          <Button variant="ghost" size="sm" onClick={() => record(false, false)}>
+
+        {/* Right: Fixed-Contrast Button Cluster */}
+        <div className="flex flex-wrap items-center justify-end gap-2 md:ml-auto shrink-0">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => record(false, false)}
+            className="text-muted-foreground hover:text-foreground font-semibold transition-colors"
+          >
             Reject all
           </Button>
-          <Button variant="outline" size="sm" onClick={() => record(true, false)}>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => record(true, false)}
+            className="border-border bg-secondary text-foreground hover:bg-muted font-semibold transition-all shadow-sm"
+          >
             Analytics only
           </Button>
+
           <Button
             size="sm"
-            className="bg-gradient-vault text-primary-foreground"
             onClick={() => record(true, true)}
+            className="bg-gradient-vault text-primary-foreground font-bold shadow-sm transition-opacity hover:opacity-95 hover:scale-[1.01]"
           >
             Accept all
           </Button>
         </div>
+
       </div>
     </div>
   );
